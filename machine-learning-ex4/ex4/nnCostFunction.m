@@ -73,38 +73,39 @@ yVec = repmat(1:num_labels, m, 1) == repmat(y, 1, num_labels);
 
 cost = -yVec .* log(sig) - (1 - yVec) .* log(1 - sig);
 
-Theta1WithoutBias = Theta1(:, 2:end);
-Theta2WithoutBias = Theta2(:, 2:end);
-J = (1 / m) * sum(sum(cost)) + (lambda / (2 * m)) * (sum(sum(Theta1WithoutBias .^ 2)) + sum(sum(Theta2WithoutBias .^ 2)));
+J = (1 / m) * sum(sum(cost)) + (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2)));
 
-delta1 = zeros(size(Theta1));
-delta2 = zeros(size(Theta2));
+D1 = zeros(size(Theta1));
+D2 = zeros(size(Theta2));
 
-for t = 1:m
+for i = 1:m
     % forward propogation
-	a1t = a1(t,:)';
-	a2t = a2(t,:)';
-	sigt = sig(t,:)';
-	yVecT = yVec(t,:)';
+	a1t = a1(i,:)';
+	a2t = a2(i,:)';
+	a = sig(i,:)';
+	yVecT = yVec(i,:)';
 
     % output layer
-	d3t = sigt - yVecT;
+	d3t = a - yVecT;
 
 	z2t = [1; Theta1 * a1t];
     
     % hidden layer
 	d2t = Theta2' * d3t .* sigmoidGradient(z2t);
 
-	delta1 = delta1 + (d2t(2:end) * a1t');
-	delta2 = delta2 + (d3t * a2t');
+	D1 = D1 + (d2t(2:end) * a1t');
+	D2 = D2 + (d3t * a2t');
 end
 
 
-Theta1ZeroBias = [ zeros(size(Theta1, 1), 1) Theta1WithoutBias ];
-Theta2ZeroBias = [ zeros(size(Theta2, 1), 1) Theta2WithoutBias ];
-Theta1_grad = (1 / m) * delta1 + (lambda / m) * Theta1ZeroBias;
-Theta2_grad = (1 / m) * delta2 + (lambda / m) * Theta2ZeroBias;
+Theta1_grad = Theta1_grad + (1/m) * D1;
+Theta2_grad = Theta2_grad + (1/m) * D2;
 
+
+% regularization of gradient
+
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + (lambda/m)*(Theta1(:,2:end));
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + (lambda/m)*(Theta2(:,2:end));
 
 % =========================================================================
 
