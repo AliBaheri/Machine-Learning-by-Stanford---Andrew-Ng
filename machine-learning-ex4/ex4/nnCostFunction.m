@@ -62,7 +62,7 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-
+% Part 1
 a1 = [ones(m, 1) X];
 
 a2 = [ones(m, 1) sigmoid(a1 * Theta1')];
@@ -78,6 +78,7 @@ J = (1 / m) * sum(sum(cost)) + (lambda / (2 * m)) * (sum(sum(Theta1(:, 2:end) .^
 D1 = zeros(size(Theta1));
 D2 = zeros(size(Theta2));
 
+% Part 2
 for i = 1:m
     % forward propogation
 	a1t = a1(i,:)';
@@ -101,7 +102,7 @@ end
 Theta1_grad = Theta1_grad + (1/m) * D1;
 Theta2_grad = Theta2_grad + (1/m) * D2;
 
-
+% Part 3
 % regularization of gradient
 
 Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + (lambda/m)*(Theta1(:,2:end));
