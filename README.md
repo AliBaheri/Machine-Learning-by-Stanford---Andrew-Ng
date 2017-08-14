@@ -6,7 +6,7 @@ This repo contains material related to Coursera's Machine Learning course.
 - Linear Regression (one variable and multiple variables)
 - Logistic Regression
 - Regularization
-- Neural networks
+- Neural Networks
 - Support Vector Machine
 - Clustering
 - Dimensionality Reduction
