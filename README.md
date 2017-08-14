@@ -12,3 +12,5 @@ This repo contains material related to Coursera's Machine Learning course.
 - Dimensionality Reduction
 - Anomaly Detection
 - Recommender System
+- Large Scale Machine Learning
+- Application Example: Photo OCR
